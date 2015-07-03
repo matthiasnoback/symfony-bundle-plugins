@@ -2,7 +2,7 @@
 
 namespace Matthias\BundlePlugins\Tests;
 
-use Symfony\Component\HttpKernel\HttpKernel;
+use Matthias\BundlePlugins\BundlePlugin;
 use Symfony\Component\HttpKernel\Kernel;
 
 class BundleWithPluginsTest extends \PHPUnit_Framework_TestCase
@@ -18,8 +18,8 @@ class BundleWithPluginsTest extends \PHPUnit_Framework_TestCase
         );
         $kernel->boot();
 
-        $this->pluginIsLoaded($kernel, 'core');
-        $this->pluginIsLoaded($kernel, 'foo');
+        $this->pluginIsLoaded($kernel, new CorePlugin());
+        $this->pluginIsLoaded($kernel, new FooPlugin());
     }
 
     /**
@@ -33,13 +33,15 @@ class BundleWithPluginsTest extends \PHPUnit_Framework_TestCase
         );
         $kernel->boot();
 
-        $this->pluginIsLoaded($kernel, 'core');
-        $this->pluginIsLoaded($kernel, 'foo');
-        $this->pluginIsLoaded($kernel, 'bar');
+        $this->pluginIsLoaded($kernel, new CorePlugin());
+        $this->pluginIsLoaded($kernel, new FooPlugin());
+        $this->pluginIsLoaded($kernel, new BarPlugin());
     }
 
-    private function pluginIsLoaded(Kernel $httpKernel, $plugin)
+    private function pluginIsLoaded(Kernel $httpKernel, BundlePlugin $plugin)
     {
-        $this->assertTrue($httpKernel->getContainer()->hasParameter($plugin . '.loaded'));
+        $this->assertTrue($httpKernel->getContainer()->hasParameter($plugin->name() . '.loaded'));
+        $this->assertTrue($plugin::$built);
+        $this->assertTrue($plugin::$booted);
     }
 }
