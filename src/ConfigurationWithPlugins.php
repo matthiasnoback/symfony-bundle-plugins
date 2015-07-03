@@ -5,27 +5,37 @@ namespace Matthias\BundlePlugins;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class ConfigurationWithPlugins implements ConfigurationInterface
+final class ConfigurationWithPlugins implements ConfigurationInterface
 {
-    private $root;
+    /**
+     * @var string
+     */
+    private $rootNodeName;
 
     /**
      * @var BundlePlugin[]
      */
-    private $plugins;
+    private $registeredPlugins;
 
-    public function __construct($root, array $plugins)
+    /**
+     * @param string $rootNodeName
+     * @param array $registeredPlugins
+     */
+    public function __construct($rootNodeName, array $registeredPlugins)
     {
-        $this->plugins = $plugins;
-        $this->root = $root;
+        $this->registeredPlugins = $registeredPlugins;
+        $this->rootNodeName = $rootNodeName;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root($this->root);
+        $rootNode = $treeBuilder->root($this->rootNodeName);
 
-        foreach ($this->plugins as $plugin) {
+        foreach ($this->registeredPlugins as $plugin) {
             $pluginNode = $rootNode->children()->arrayNode($plugin->name());
             $plugin->addConfiguration($pluginNode);
         }

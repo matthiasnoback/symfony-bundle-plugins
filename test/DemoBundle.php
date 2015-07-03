@@ -11,13 +11,8 @@ class DemoBundle extends BundleWithPlugins
         return 'demo';
     }
 
-    public function __construct(array $plugins = array())
+    protected function alwaysRegisteredPlugins()
     {
-        parent::__construct(
-            array_merge(
-                array(new CorePlugin()),
-                $plugins
-            )
-        );
+        return array(new CorePlugin());
     }
 }
