@@ -151,3 +151,8 @@ class FooPlugin implements BundlePlugin
 If your plugin is quite simple (i.e. only needs a `load()` method), just make
 the plugin class extend `SimpleBundlePlugin` which contains stub 
 implementations for the interface methods that you won't need.
+
+## Thanks
+
+To [@dennisdegreef](https://github.com/dennisdegreef) for reviving the test 
+suite of this project.
