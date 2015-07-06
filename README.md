@@ -9,6 +9,12 @@ system for bundles. Each bundle plugin can define its own services and
 configuration. This basically makes your bundles conform to the open/closed 
 principle.
 
+## Setup
+
+Install this library in your project by running
+
+    composer require matthiasnoback/symfony-bundle-plugins
+
 ## Example
 
 First, your bundle should extend `BundleWithPlugins`. You need to implement 
