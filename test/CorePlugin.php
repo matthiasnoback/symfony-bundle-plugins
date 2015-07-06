@@ -11,9 +11,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class CorePlugin implements BundlePlugin
 {
-    public static $booted;
-    public static $built;
-
     public function name()
     {
         return 'core';
@@ -29,20 +26,20 @@ class CorePlugin implements BundlePlugin
     {
         $pluginNode
             ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('where')
-            ->defaultValue('Amsterdam')
-            ->end()
-            ->end();
+                ->children()
+                    ->scalarNode('where')
+                        ->defaultValue('Amsterdam')
+                    ->end()
+                ->end();
     }
 
     public function build(ContainerBuilder $container)
     {
-        self::$built = true;
+        $container->addCompilerPass(new SetParameterCompilerPass('core.build_was_called', true));
     }
 
     public function boot(ContainerInterface $container)
     {
-        self::$booted = true;
+        $container->get('core.boot')->call();
     }
 }

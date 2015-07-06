@@ -11,9 +11,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class BarPlugin implements BundlePlugin
 {
-    public static $booted;
-    public static $built;
-
     public function name()
     {
         return 'bar';
@@ -36,11 +33,11 @@ class BarPlugin implements BundlePlugin
 
     public function build(ContainerBuilder $container)
     {
-        self::$built = true;
+        $container->addCompilerPass(new SetParameterCompilerPass('bar.build_was_called', true));
     }
 
     public function boot(ContainerInterface $container)
     {
-        self::$booted = true;
+        $container->get('bar.boot')->call();
     }
 }

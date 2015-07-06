@@ -2,7 +2,6 @@
 
 namespace Matthias\BundlePlugins\Tests;
 
-use Matthias\BundlePlugins\BundlePlugin;
 use Symfony\Component\HttpKernel\Kernel;
 
 class BundleWithPluginsTest extends IsolatedKernelTestCase
@@ -13,11 +12,12 @@ class BundleWithPluginsTest extends IsolatedKernelTestCase
     public function it_only_loads_configuration_for_enabled_bundles_1()
     {
         $kernel = $this->createKernel(array(), array(
-            new FooPlugin(),
+            new DemoBundle(array(new FooPlugin())),
         ));
 
-        $this->pluginIsLoaded($kernel, new CorePlugin());
-        $this->pluginIsLoaded($kernel, new FooPlugin());
+        $this->pluginIsLoaded($kernel, 'core');
+        $this->pluginIsLoaded($kernel, 'foo');
+        $this->pluginIsNotLoaded($kernel, 'bar');
     }
 
     /**
@@ -26,25 +26,69 @@ class BundleWithPluginsTest extends IsolatedKernelTestCase
     public function it_only_loads_configuration_for_enabled_bundles_2()
     {
         $kernel = $this->createKernel(array(), array(
-            new FooPlugin(),
-            new BarPlugin(),
+            new DemoBundle(array(
+                new FooPlugin(),
+                new BarPlugin(),
+            ))
         ));
 
-        $this->pluginIsLoaded($kernel, new CorePlugin());
-        $this->pluginIsLoaded($kernel, new FooPlugin());
-        $this->pluginIsLoaded($kernel, new BarPlugin());
+        $this->pluginIsLoaded($kernel, 'core');
+        $this->pluginIsLoaded($kernel, 'foo');
+        $this->pluginIsLoaded($kernel, 'bar');
     }
 
     /**
-     * @param Kernel $httpKernel
-     * @param string $plugin
+     * @test
      */
-    private function pluginIsLoaded(Kernel $httpKernel, $plugin)
+    public function it_loads_no_plugins_if_there_are_no_default_plugins()
     {
-        $parameterName = $plugin->name() . '.loaded';
-        $hasParameter = $httpKernel->getContainer()->hasParameter($parameterName);
-        $this->assertTrue($hasParameter, "Failed asserting DI Container has parameter '" . $parameterName . "'");
-        $this->assertTrue($plugin::$built);
-        $this->assertTrue($plugin::$booted);
+        $kernel = $this->createKernel(array(), array(new BundleWithNoDefaultPlugins()));
+
+        $this->pluginIsNotLoaded($kernel, 'core');
+        $this->pluginIsNotLoaded($kernel, 'foo');
+        $this->pluginIsNotLoaded($kernel, 'bar');
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_load_very_simple_plugins()
+    {
+        $kernel = $this->createKernel(array(), array(new BundleWithOnlyASimplePlugin()));
+
+        $this->assertTrue($kernel->getContainer()->hasParameter('a_simple_plugin.loaded'));
+    }
+
+    /**
+     * @param Kernel $kernel
+     * @param string $pluginName
+     */
+    private function pluginIsLoaded(Kernel $kernel, $pluginName)
+    {
+        $this->pluginIs(true, $kernel, $pluginName);
+    }
+
+    /**
+     * @param Kernel $kernel
+     * @param string $pluginName
+     */
+    private function pluginIsNotLoaded(Kernel $kernel, $pluginName)
+    {
+        $this->pluginIs(false, $kernel, $pluginName);
+    }
+
+    /**
+     * @param bool $loaded
+     * @param Kernel $kernel
+     * @param string $pluginName
+     */
+    private function pluginIs($loaded, Kernel $kernel, $pluginName)
+    {
+        $this->assertSame($loaded, $kernel->getContainer()->hasParameter($pluginName . '.loaded'));
+        $this->assertSame($loaded, $kernel->getContainer()->hasParameter($pluginName . '.build_was_called'));
+
+        if ($kernel->getContainer()->has($pluginName . 'boot')) {
+            $this->assertSame($loaded, $kernel->getContainer()->get($pluginName . '.boot')->wasCalled());
+        }
     }
 }

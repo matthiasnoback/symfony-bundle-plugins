@@ -1,2 +1,6 @@
 parameters:
     core.loaded: true
+
+services:
+    core.boot:
+        class: Matthias\BundlePlugins\Tests\BootSpy

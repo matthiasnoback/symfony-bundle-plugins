@@ -11,9 +11,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class FooPlugin implements BundlePlugin
 {
-    public static $booted;
-    public static $built;
-
     public function name()
     {
         return 'foo';
@@ -36,11 +33,11 @@ class FooPlugin implements BundlePlugin
 
     public function build(ContainerBuilder $container)
     {
-        self::$built = true;
+        $container->addCompilerPass(new SetParameterCompilerPass('foo.build_was_called', true));
     }
 
     public function boot(ContainerInterface $container)
     {
-        self::$booted = true;
+        $container->get('foo.boot')->call();
     }
 }

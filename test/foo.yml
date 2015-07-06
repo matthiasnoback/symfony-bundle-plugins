@@ -1,2 +1,6 @@
 parameters:
     foo.loaded: true
+
+services:
+    foo.boot:
+        class: Matthias\BundlePlugins\Tests\BootSpy

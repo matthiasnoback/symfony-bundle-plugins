@@ -2,11 +2,6 @@
 
 namespace Matthias\BundlePlugins\Tests;
 
-/**
- * Class IsolatedKernelTestCase
- *
- * @package Matthias\BundlePlugins\Tests
- */
 class IsolatedKernelTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -25,20 +20,21 @@ class IsolatedKernelTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $configuration
-     * @param array $plugins
+     * @param array $enabledBundles
      *
      * @return AppKernel
      */
-    protected function createKernel($configuration, $plugins)
+    protected function createKernel($configuration, array $enabledBundles)
     {
         $kernel = new AppKernel(
             $configuration,
-            $plugins,
+            $enabledBundles,
             mt_rand(0, 9999999),
             $this->getCacheDir(),
             $this->getLogsDir()
         );
         $kernel->boot();
+
         return $kernel;
     }
 

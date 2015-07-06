@@ -9,17 +9,17 @@ use Symfony\Component\HttpKernel\Kernel;
 class AppKernel extends Kernel
 {
     private $configuration;
-    private $enabledPlugins;
+    private $enabledBundles;
 
     private $cacheDir;
     private $logsDir;
 
-    public function __construct(array $configuration, array $enabledPlugins, $uniqueIdentifier, $cacheDir, $logsDir)
+    public function __construct(array $configuration, array $enabledBundles, $uniqueIdentifier, $cacheDir, $logsDir)
     {
         parent::__construct('test' . $uniqueIdentifier, true);
 
         $this->configuration = $configuration;
-        $this->enabledPlugins = $enabledPlugins;
+        $this->enabledBundles = $enabledBundles;
 
         $this->cacheDir = $cacheDir;
         $this->logsDir = $logsDir;
@@ -31,8 +31,8 @@ class AppKernel extends Kernel
         return array_merge(
             array(
                 new FrameworkBundle(),
-                new DemoBundle($this->enabledPlugins)
-            )
+            ),
+            $this->enabledBundles
         );
     }
 
