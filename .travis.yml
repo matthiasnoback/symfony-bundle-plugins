@@ -1,16 +1,25 @@
 language: php
 
-php:
-    - 5.4
-    - 5.5
-    - 5.6
-    - hhvm
-
 matrix:
-    allow_failures:
-        - php: hhvm
+  include:
+    - php: 5.3
+      env: SYMFONY_VERSION=2.3.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.7.*
 
-before_script:
-  - composer install --dev --prefer-source
+before_install:
+  - composer require --dev --no-update symfony/framework-bundle "$SYMFONY_VERSION"
 
-script: phpunit --coverage-clover=coverage.clover
+install:
+  - composer update --prefer-source
+
+script:
+  - vendor/bin/phpunit
+
+after_script:
+  - vendor/bin/coveralls
+
+notifications:
+  email: matthiasnoback@gmail.com
+
+sudo: false
