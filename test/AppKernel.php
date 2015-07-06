@@ -11,12 +11,18 @@ class AppKernel extends Kernel
     private $configuration;
     private $enabledPlugins;
 
-    public function __construct(array $configuration, array $enabledPlugins)
+    private $cacheDir;
+    private $logsDir;
+
+    public function __construct(array $configuration, array $enabledPlugins, $uniqueIdentifier, $cacheDir, $logsDir)
     {
-        parent::__construct('test', true);
+        parent::__construct('test' . $uniqueIdentifier, true);
 
         $this->configuration = $configuration;
         $this->enabledPlugins = $enabledPlugins;
+
+        $this->cacheDir = $cacheDir;
+        $this->logsDir = $logsDir;
     }
 
 
@@ -45,11 +51,11 @@ class AppKernel extends Kernel
 
     public function getCacheDir()
     {
-        return __DIR__ . '/temp/cache';
+        return $this->cacheDir;
     }
 
     public function getLogDir()
     {
-        return __DIR__ . '/temp/logs';
+        return $this->logsDir;
     }
 }
