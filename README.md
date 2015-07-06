@@ -2,7 +2,7 @@
 
 By Matthias Noback
 
-[![Coverage Status](https://coveralls.io/repos/matthiasnoback/symfony-bundle-plugins/badge.svg)](https://coveralls.io/r/matthiasnoback/symfony-bundle-plugins)
+[![Build Status](https://travis-ci.org/matthiasnoback/symfony-bundle-plugins.svg?branch=master)](https://travis-ci.org/matthiasnoback/symfony-bundle-plugins) [![Coverage Status](https://coveralls.io/repos/matthiasnoback/symfony-bundle-plugins/badge.svg)](https://coveralls.io/r/matthiasnoback/symfony-bundle-plugins)
 
 This package helps you create extensible bundles, by introducing a plugin 
 system for bundles. Each bundle plugin can define its own services and 
