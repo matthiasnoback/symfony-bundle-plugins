@@ -5,7 +5,7 @@ namespace Matthias\BundlePlugins;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class ExtensionWithPlugins extends Extension
+class ExtensionWithPlugins extends Extension
 {
     /**
      * @var string
@@ -36,9 +36,7 @@ final class ExtensionWithPlugins extends Extension
 
         $processedConfiguration = $this->processConfiguration($configuration, $config);
 
-        foreach ($this->registeredPlugins as $plugin) {
-            $this->loadPlugin($container, $plugin, $processedConfiguration);
-        }
+        $this->loadPlugins($container, $processedConfiguration);
     }
 
     /**
@@ -55,6 +53,17 @@ final class ExtensionWithPlugins extends Extension
     public function getAlias()
     {
         return $this->alias;
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param $processedConfiguration
+     */
+    protected function loadPlugins(ContainerBuilder $container, $processedConfiguration)
+    {
+        foreach ($this->registeredPlugins as $plugin) {
+            $this->loadPlugin($container, $plugin, $processedConfiguration);
+        }
     }
 
     /**

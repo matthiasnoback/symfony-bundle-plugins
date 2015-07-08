@@ -2,10 +2,11 @@
 
 namespace Matthias\BundlePlugins;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-final class ConfigurationWithPlugins implements ConfigurationInterface
+class ConfigurationWithPlugins implements ConfigurationInterface
 {
     /**
      * @var string
@@ -35,11 +36,19 @@ final class ConfigurationWithPlugins implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root($this->rootNodeName);
 
+        $this->addPluginsConfig($rootNode);
+
+        return $treeBuilder;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    protected function addPluginsConfig(ArrayNodeDefinition $rootNode)
+    {
         foreach ($this->registeredPlugins as $plugin) {
             $pluginNode = $rootNode->children()->arrayNode($plugin->name());
             $plugin->addConfiguration($pluginNode);
         }
-
-        return $treeBuilder;
     }
 }
