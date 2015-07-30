@@ -8,13 +8,12 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 final class ExtensionWithPlugins extends Extension
 {
     /**
-     * @var string
+     * @var BundleWithPlugins
      */
     private $bundle;
 
     /**
-     * @param string $alias The alias for this extension (i.e. the configuration key)
-     * @param array $registeredPlugins The plugins that were registered
+     * @param BundleWithPlugins $bundle
      */
     public function __construct(BundleWithPlugins $bundle)
     {

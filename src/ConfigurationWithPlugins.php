@@ -8,13 +8,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 final class ConfigurationWithPlugins implements ConfigurationInterface
 {
     /**
-     * @var string
+     * @var BundleWithPlugins
      */
     private $bundle;
 
     /**
-     * @param string $rootNodeName
-     * @param array $registeredPlugins
+     * @param BundleWithPlugins $bundle
      */
     public function __construct(BundleWithPlugins $bundle)
     {
