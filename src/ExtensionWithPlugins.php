@@ -10,21 +10,15 @@ final class ExtensionWithPlugins extends Extension
     /**
      * @var string
      */
-    private $alias;
-
-    /**
-     * @var BundlePlugin[]
-     */
-    private $registeredPlugins;
+    private $bundle;
 
     /**
      * @param string $alias The alias for this extension (i.e. the configuration key)
      * @param array $registeredPlugins The plugins that were registered
      */
-    public function __construct($alias, array $registeredPlugins)
+    public function __construct(BundleWithPlugins $bundle)
     {
-        $this->registeredPlugins = $registeredPlugins;
-        $this->alias = $alias;
+        $this->bundle = $bundle;
     }
 
     /**
@@ -46,7 +40,7 @@ final class ExtensionWithPlugins extends Extension
      */
     public function getConfiguration(array $config, ContainerBuilder $container)
     {
-        return new ConfigurationWithPlugins($this->getAlias(), $this->registeredPlugins);
+        return new ConfigurationWithPlugins($this->bundle);
     }
 
     /**
@@ -54,7 +48,7 @@ final class ExtensionWithPlugins extends Extension
      */
     public function getAlias()
     {
-        return $this->alias;
+        return $this->bundle->getAlias();
     }
 
     /**

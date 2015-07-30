@@ -2,6 +2,7 @@
 
 namespace Matthias\BundlePlugins;
 
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -11,7 +12,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * The bundle itself can have no container extension or configuration anymore. Instead, you can introduce something
  * like a `CorePlugin`, which is registered as a `BundlePlugin` for this bundle. Return an instance of it from your
- * bundle's `alwaysRegisteredPlugins()` method.
+ * bundle's `defaultPlugins()` method.
  */
 abstract class BundleWithPlugins extends Bundle
 {
@@ -20,11 +21,13 @@ abstract class BundleWithPlugins extends Bundle
      */
     private $registeredPlugins = array();
 
-    abstract protected function getAlias();
+    abstract public function getAlias();
+
+    abstract public function addConfiguration(NodeDefinition $rootNode);
 
     final public function __construct(array $plugins = array())
     {
-        foreach ($this->alwaysRegisteredPlugins() as $plugin) {
+        foreach ($this->defaultPlugins() as $plugin) {
             $this->registerPlugin($plugin);
         }
 
@@ -58,7 +61,7 @@ abstract class BundleWithPlugins extends Bundle
      *
      * @return BundlePlugin[]
      */
-    protected function alwaysRegisteredPlugins()
+    protected function defaultPlugins()
     {
         return array();
     }
@@ -68,7 +71,7 @@ abstract class BundleWithPlugins extends Bundle
      */
     final public function getContainerExtension()
     {
-        return new ExtensionWithPlugins($this->getAlias(), $this->registeredPlugins);
+        return new ExtensionWithPlugins($this);
     }
 
     /**
@@ -79,5 +82,10 @@ abstract class BundleWithPlugins extends Bundle
     private function registerPlugin(BundlePlugin $plugin)
     {
         $this->registeredPlugins[] = $plugin;
+    }
+
+    public function getPlugins()
+    {
+        return $this->registeredPlugins;
     }
 }
