@@ -3,15 +3,20 @@
 namespace Matthias\BundlePlugins\Tests;
 
 use Matthias\BundlePlugins\BundleWithPlugins;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 class DemoBundle extends BundleWithPlugins
 {
-    protected function getAlias()
+    public function getAlias()
     {
         return 'demo';
     }
 
-    protected function alwaysRegisteredPlugins()
+    public function addConfiguration(NodeDefinition $rootNode)
+    {
+    }
+
+    protected function defaultPlugins()
     {
         return array(new CorePlugin());
     }

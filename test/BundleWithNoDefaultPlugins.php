@@ -3,11 +3,16 @@
 namespace Matthias\BundlePlugins\Tests;
 
 use Matthias\BundlePlugins\BundleWithPlugins;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 class BundleWithNoDefaultPlugins extends BundleWithPlugins
 {
-    protected function getAlias()
+    public function getAlias()
     {
         return 'bundle_with_no_default_plugins';
+    }
+
+    public function addConfiguration(NodeDefinition $rootNode)
+    {
     }
 }

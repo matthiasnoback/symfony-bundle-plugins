@@ -29,7 +29,7 @@ final class ExtensionWithPlugins extends Extension
 
         $processedConfiguration = $this->processConfiguration($configuration, $config);
 
-        foreach ($this->registeredPlugins as $plugin) {
+        foreach ($this->bundle->getPlugins() as $plugin) {
             $this->loadPlugin($container, $plugin, $processedConfiguration);
         }
     }
