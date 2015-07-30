@@ -11,8 +11,4 @@ class BundleWithNoDefaultPlugins extends BundleWithPlugins
     {
         return 'bundle_with_no_default_plugins';
     }
-
-    public function addConfiguration(NodeDefinition $rootNode)
-    {
-    }
 }

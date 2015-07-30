@@ -12,10 +12,6 @@ class BundleWithOnlyASimplePlugin extends BundleWithPlugins
         return 'bundle_with_only_a_simple_plugin';
     }
 
-    public function addConfiguration(NodeDefinition $rootNode)
-    {
-    }
-
     protected function defaultPlugins()
     {
         return array(

@@ -12,10 +12,6 @@ class DemoBundle extends BundleWithPlugins
         return 'demo';
     }
 
-    public function addConfiguration(NodeDefinition $rootNode)
-    {
-    }
-
     protected function defaultPlugins()
     {
         return array(new CorePlugin());

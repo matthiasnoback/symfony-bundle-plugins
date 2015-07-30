@@ -23,7 +23,9 @@ abstract class BundleWithPlugins extends Bundle
 
     abstract public function getAlias();
 
-    abstract public function addConfiguration(NodeDefinition $rootNode);
+    public function addConfiguration(NodeDefinition $rootNode)
+    {
+    }
 
     final public function __construct(array $plugins = array())
     {
