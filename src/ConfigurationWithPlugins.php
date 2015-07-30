@@ -8,23 +8,16 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 final class ConfigurationWithPlugins implements ConfigurationInterface
 {
     /**
-     * @var string
+     * @var BundleWithPlugins
      */
-    private $rootNodeName;
+    private $bundle;
 
     /**
-     * @var BundlePlugin[]
+     * @param BundleWithPlugins $bundle
      */
-    private $registeredPlugins;
-
-    /**
-     * @param string $rootNodeName
-     * @param array $registeredPlugins
-     */
-    public function __construct($rootNodeName, array $registeredPlugins)
+    public function __construct(BundleWithPlugins $bundle)
     {
-        $this->registeredPlugins = $registeredPlugins;
-        $this->rootNodeName = $rootNodeName;
+        $this->bundle = $bundle;
     }
 
     /**
@@ -33,9 +26,10 @@ final class ConfigurationWithPlugins implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root($this->rootNodeName);
+        $rootNode = $treeBuilder->root($this->bundle->getAlias());
+        $bundleNode = $this->bundle->addConfiguration($rootNode);
 
-        foreach ($this->registeredPlugins as $plugin) {
+        foreach ($this->bundle->getPlugins() as $plugin) {
             $pluginNode = $rootNode->children()->arrayNode($plugin->name());
             $plugin->addConfiguration($pluginNode);
         }

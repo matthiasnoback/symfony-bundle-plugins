@@ -8,23 +8,16 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 final class ExtensionWithPlugins extends Extension
 {
     /**
-     * @var string
+     * @var BundleWithPlugins
      */
-    private $alias;
+    private $bundle;
 
     /**
-     * @var BundlePlugin[]
+     * @param BundleWithPlugins $bundle
      */
-    private $registeredPlugins;
-
-    /**
-     * @param string $alias The alias for this extension (i.e. the configuration key)
-     * @param array $registeredPlugins The plugins that were registered
-     */
-    public function __construct($alias, array $registeredPlugins)
+    public function __construct(BundleWithPlugins $bundle)
     {
-        $this->registeredPlugins = $registeredPlugins;
-        $this->alias = $alias;
+        $this->bundle = $bundle;
     }
 
     /**
@@ -36,7 +29,7 @@ final class ExtensionWithPlugins extends Extension
 
         $processedConfiguration = $this->processConfiguration($configuration, $config);
 
-        foreach ($this->registeredPlugins as $plugin) {
+        foreach ($this->bundle->getPlugins() as $plugin) {
             $this->loadPlugin($container, $plugin, $processedConfiguration);
         }
     }
@@ -46,7 +39,7 @@ final class ExtensionWithPlugins extends Extension
      */
     public function getConfiguration(array $config, ContainerBuilder $container)
     {
-        return new ConfigurationWithPlugins($this->getAlias(), $this->registeredPlugins);
+        return new ConfigurationWithPlugins($this->bundle);
     }
 
     /**
@@ -54,7 +47,7 @@ final class ExtensionWithPlugins extends Extension
      */
     public function getAlias()
     {
-        return $this->alias;
+        return $this->bundle->getAlias();
     }
 
     /**
