@@ -3,9 +3,10 @@
 namespace Matthias\BundlePlugins;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class ExtensionWithPlugins extends Extension
+final class ExtensionWithPlugins extends Extension implements PrependExtensionInterface
 {
     /**
      * @var string
@@ -85,5 +86,17 @@ final class ExtensionWithPlugins extends Extension
         }
 
         return $processedConfiguration[$plugin->name()];
+    }
+
+    /**
+     * Allow an extension to prepend the extension configurations.
+     *
+     * @param ContainerBuilder $container
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        foreach ($this->registeredPlugins as $plugin) {
+            $plugin->prepend($container);
+        }
     }
 }
