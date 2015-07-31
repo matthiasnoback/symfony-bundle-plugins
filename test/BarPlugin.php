@@ -40,4 +40,8 @@ class BarPlugin implements BundlePlugin
     {
         $container->get('bar.boot')->call();
     }
+
+    public function prepend(ContainerBuilder $container)
+    {
+    }
 }
