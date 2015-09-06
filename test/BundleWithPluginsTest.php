@@ -60,6 +60,21 @@ class BundleWithPluginsTest extends IsolatedKernelTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_can_load_plugins_with_prepend_extension()
+    {
+        $kernel = $this->createKernel(array(), array(
+            new DemoBundle(array(
+                new ASimplePluginWithPrependExtension(),
+            ))
+        ));
+
+        $this->assertTrue($kernel->getContainer()->hasParameter('a_simple_plugin_with_prepend_extension.loaded'));
+        $this->assertTrue($kernel->getContainer()->hasParameter('a_simple_plugin_with_prepend_extension.prepend_method_called'));
+    }
+
+    /**
      * @param Kernel $kernel
      * @param string $pluginName
      */
