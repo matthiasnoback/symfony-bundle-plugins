@@ -55,4 +55,13 @@ interface BundlePlugin
      * @return void
      */
     public function boot(ContainerInterface $container);
+
+    /**
+     * When the container is generated for the first time, this method is called
+     * to give an opportunity to prepend configuration for this or other bundles
+     *
+     * @param ContainerInterface $container
+     * @return void
+     */
+    public function prepend(ContainerBuilder $container);
 }

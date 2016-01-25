@@ -40,4 +40,8 @@ class FooPlugin implements BundlePlugin
     {
         $container->get('foo.boot')->call();
     }
+
+    public function prepend(ContainerBuilder $container)
+    {
+    }
 }

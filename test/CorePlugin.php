@@ -42,4 +42,8 @@ class CorePlugin implements BundlePlugin
     {
         $container->get('core.boot')->call();
     }
+
+    public function prepend(ContainerBuilder $container)
+    {
+    }
 }

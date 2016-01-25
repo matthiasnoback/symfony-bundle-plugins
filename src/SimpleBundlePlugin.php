@@ -37,4 +37,13 @@ abstract class SimpleBundlePlugin implements BundlePlugin
     public function boot(ContainerInterface $container)
     {
     }
+
+    /**
+     * Override this method if your plugin needs to prepend configuration
+     *
+     * @inheritdoc
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+    }
 }

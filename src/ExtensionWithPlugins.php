@@ -99,4 +99,16 @@ final class ExtensionWithPlugins extends Extension implements PrependExtensionIn
 
         return $processedConfiguration[$plugin->name()];
     }
+
+    /**
+     * Allow an extension to prepend the extension configurations.
+     *
+     * @param ContainerBuilder $container
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        foreach ($this->registeredPlugins as $plugin) {
+            $plugin->prepend($container);
+        }
+    }
 }
