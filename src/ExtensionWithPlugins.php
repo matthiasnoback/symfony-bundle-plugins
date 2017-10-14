@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class ExtensionWithPlugins extends Extension implements PrependExtensionInterface
+class ExtensionWithPlugins extends Extension implements PrependExtensionInterface
 {
     /**
      * @var string

@@ -5,7 +5,7 @@ namespace Matthias\BundlePlugins;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-final class ConfigurationWithPlugins implements ConfigurationInterface
+class ConfigurationWithPlugins implements ConfigurationInterface
 {
     /**
      * @var string
